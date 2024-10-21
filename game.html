@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyType</title>
+    <link rel="stylesheet" href="game.css">
+</head>
+<body>
+    <div id= "mainmenu">
+        <div id="menu">
+            <img class="mainlogo" src="img/logo.png"> 
+            <div id="level">
+                <div id="mylevel">
+                    <a id="statusmode" mode="easy" onclick="setMode(mode)">Easy</a>
+                    <a class="rightturn" onclick="rightChange()"> > </a>
+                </div>
+                <a href="#howtoplay">HOW TO PLAY ?</a>
+            </div>
+        </div>
+        
+        <div id="howtoplay" class="overlay">
+          <div class="popup">
+            <h1>How to Play</h1> 
+            <p>1. Defeat the monster by answering the question!</p> 
+            <p>2. Provide the complete answer to inflict damage on the monsters.</p> 
+            <p>3. Don't worry about typos—just keep typing and avoid using backspace!</p> 
+            <p>4. If you fail to complete the word in time, you'll take damage. If your health reaches zero, the game ends!</p> 
+            <p>5. Typing consecutive correct answers will earn you a combo! You'll receive a stacking 0.5 point multiplier for every 10 correct inputs, but you'll lose it if you make a mistake!</p>
+            <a class="close" href="#Close">&times;</a>
+          </div>
+        </div>
+    </div>
+    
+    <div id="game">
+        <img src="img/logo.png" class="menuLogo">
+        <div id="startdelay">3</div>
+        <div id="gamebox">
+            <div class="healthBar">
+                <div class="bossHp">Boss Hp :</div>
+                <div class="healthBg">
+                    <div class="health"></div>
+                </div>
+            </div>
+            <div class="myhealthBar">
+                <div class="myHp">My Hp :</div>
+                <div class="myhealthBg">
+                    <div class="myhealth"></div>
+                </div>
+            </div>
+            <div class="questWrap">
+                <p id="question-text"></p> <!-- This will display the question -->
+            </div>
+
+            <div class="images">
+                <img id="player-start" src="/img/player.gif" alt="player">
+                <img id="player-die" src="/img/player-die.gif" alt="player"> 
+                <img id="monster-start"src="" alt="monster">
+                <img id="monster-die"src="" alt="monster">
+            </div>
+            <div id="myword">
+                <div class="wordsWrap">
+                    <p class="words"></p>
+                </div>
+            </div>
+            <div id="timestatus">
+                <h1 class="time">Time : <span id="theTime">_</span></h1>
+            </div>
+        </div>
+    </div>
+
+    <div id="gamewin">
+        <h2 class="win">You Defeated The Monster!</h2>
+        <div class="scoreEnd">Score : <span id="updatescore">0</span></div>
+        <a href="#Menu" onclick="menuGame()">Play Again</a>
+    </div>
+
+    <div id="gameover">
+        <h2 class="lose">You got killed!</h2>
+        <div class="scoreEnd">Score : <span id="updatescore">0</span></div>
+        <a href="#Menu" onclick="menuGame()">Play Again</a>
+    </div>
+
+    <div id="score">
+        <div class="mycombo">Combo : <span id="updatecombo">0</span></div>
+        <div class="myscore">Score : <span id="updatescore">0</span></div>
+    </div>
+
+    <div id="preload">
+        <img src="./img/Mons1.gif">
+        <img src="./img/Mons1-die.gif">
+        <img src="./img/Mons2.gif">
+        <img src="./img/Mons2-die.gif">
+        <img src="./img/Mons3.gif">
+        <img src="./img/Mons3-die.gif">
+        <img src="./img/Mons4.gif">
+        <img src="./img/Mons4-die.gif">
+        <img src="./img/Mons5.gif">
+        <img src="./img/Mons5-die.gif">
+        <img src="./img/player.gif">
+        <img src="./img/player-die.gif">
+    </div>
+
+    <script src="questions.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
