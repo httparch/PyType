@@ -1,8 +1,0 @@
-<<<<<<< HEAD
-note:
-
-    create database 
-
-=======
-hello
->>>>>>> fab423dfeb914e09944611f594f3e66e41e056e9
