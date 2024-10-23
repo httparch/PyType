@@ -21,6 +21,7 @@ var player_die = document.getElementById("player-die");
 var myword = document.getElementById("myword");
 var timestatus = document.getElementById("timestatus");
 var updatecombo = document.getElementById("updatecombo");
+var updatescores = document.getElementById("updatescores");
 var updatescore = document.getElementById("updatescore");
 var scoreboard = document.getElementById("score");
 
@@ -54,9 +55,13 @@ function setGame() {
     hit = 0;
     combo = 0;
     score = 0;
+    console.log("setGame:" + updatecombo.innerHTML)
     gameend = false;
     updatecombo.style.color = "white";
     updatecombo.innerHTML = 0;
+    updatescore.innerHTML = 0;  
+    updatescores.innerHTML = 0;  
+    
 
     monster_start.src = "./img/Mons" + mymonster + ".gif";
     monster_die.src = "./img/Mons" + mymonster + "-die.gif";
@@ -66,7 +71,6 @@ function setGame() {
     player_die.style.display = "none";
     player_start.style.display = "block";
 
-    updatescore.innerHTML = 0;
     myword.style.display = "block";
     timestatus.style.display = "block";
 }
@@ -196,7 +200,13 @@ function typing(e) {
         if (checker === spans.length) {
             hit = 1;
             score += Math.floor(correct*(Math.floor(combo/10)*0.5 + 1));
+            console.log(score);
             updatescore.innerHTML = score;
+            console.log("update:" + updatescore.innerHTML)
+            updatescores.innerHTML = score;
+            console.log("update:" + updatescores.innerHTML)
+
+
             document.removeEventListener("keydown", typing, false);
             setTimeout(function(){
                 words.className = "words"; // restart the classes
@@ -260,7 +270,7 @@ function check() {
         // Check for player damage and apply shake once
         if (myHp < 100 && !playerDamaged) {
             playerDamaged = true; // Set the flag
-            player_start.classList.add('shake');
+           player_start.classList.add('shake');
             setTimeout(() => {
                 player_start.classList.remove('shake');
                 playerDamaged = false; // Reset the flag after shaking
@@ -307,6 +317,7 @@ function updateTime() {
 
         combo = 0;
         updatecombo.innerHTML = combo;
+        
         updatecombo.style.color = "white";
         random();
         time = totaltime+1;
