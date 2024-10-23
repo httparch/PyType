@@ -469,6 +469,10 @@ a:hover {
     top: calc(73% - 30vmax);
 }
 
+#updatescores {
+    font-size: 4vmax;
+}
+
 #updatescore {
     font-size: 4vmax;
 }
