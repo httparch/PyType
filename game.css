@@ -1,17 +1,38 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
 body {
-    background: black;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    font-family: 'Concert One', cursive;
+    background: black url('img/bg.gif') no-repeat center center fixed;
+    background-size: 180%; /* Increase this value to zoom in more */
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Your-Font-Here', sans-serif; /* Replace with your preferred font */
+    background-position: center bottom;
 }
 
 @keyframes shake {
-    0% { transform: translate(0); }
-    25% { transform: translate(-5px); }
-    50% { transform: translate(5px); }
-    75% { transform: translate(-5px); }
-    100% { transform: translate(0); }
+    0% { transform: translate(0, 0) rotate(0deg); }
+    10% { transform: translate(-10px, -5px) rotate(-2deg); }
+    20% { transform: translate(10px, 5px) rotate(2deg); }
+    30% { transform: translate(-10px, 3px) rotate(-1deg); }
+    40% { transform: translate(10px, -3px) rotate(1deg); }
+    50% { transform: translate(-10px, 5px) rotate(-2deg); }
+    60% { transform: translate(10px, -5px) rotate(2deg); }
+    70% { transform: translate(-10px, 3px) rotate(-1deg); }
+    80% { transform: translate(10px, -3px) rotate(1deg); }
+    90% { transform: translate(-10px, 5px) rotate(-2deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+.shake {
+    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
 }
 
 .color-change {
@@ -19,28 +40,27 @@ body {
     transition: filter 0.5s; /* Smooth transition */
 }
 
-.shake {
-    animation: shake 0.5s; /* Adjust duration as needed */
+.shake-animation {
+    animation: shake 1s cubic-bezier(.36,.07,.19,.97) both;
 }
 
 a {
     text-decoration: none;
     background: rgba(255, 255, 255, 0.4);
     padding: 1%;
-    /*
-    border: 10px solid #86d9ff;
-    border-radius: 50px;
-    box-shadow: 0px 0px 100px #03A9F4;
-    font-size: 4vh;
-    color:hsl(187, 100%, 42%);
-    margin: 2px;
-    transition: 0.3s;*/
+    cursor: pointer; /* Add this line to ensure the cursor is always a pointer */
+    user-select: none; /* Prevent text selection */
 }
 
 a:hover {
     background: rgb(255, 255, 255);
     box-shadow: 0px 0px 30px #03A9F4;
     color: black;
+}
+
+/* Add these new styles */
+a * {
+    pointer-events: none; /* Prevents the text inside from capturing mouse events */
 }
 
 #preload {
@@ -54,6 +74,8 @@ a:hover {
     box-shadow: 0px 0px 100px #ff0000;
     color: white;
     transition: 0.3s;
+    cursor: pointer; /* Add this line */
+    user-select: none; /* Prevent text selection */
 }
 
 #gamewin a {
@@ -63,6 +85,8 @@ a:hover {
     box-shadow: 0px 0px 100px #00ff00;
     color: white;
     transition: 0.3s;
+    cursor: pointer; /* Add this line */
+    user-select: none; /* Prevent text selection */
 }
 
 
@@ -83,56 +107,73 @@ a:hover {
 
 
 #game {
-    display: none;
-    position: fixed;
-    width: 99%;
-    height: 96%;
-    background: rgba(87, 87, 87, 0.5);
-     /*
-    background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCtnlHqbgt2zXojJ4QXB22YaT_cNU5LEA87Q&s");
-    background-repeat: no-repeat, repeat;
-    text-align: center;
-    background-size: cover; 
-    background-position: center; 
-   
-    background-image: ;
-    
-    border: 10px solid #86d9ff;
-    border-radius: 50px;
-    box-shadow: 0px 0px 100px #03A9F4;*/
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 2px solid #86d9ff;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    box-sizing: border-box;
+}
+
+#gamebox {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    box-sizing: border-box;
 }
 
 .mylevel {
     margin-top: 2vmax;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .rightturn {
     display: inline-block;
     color: white;
-    width: 2%;
+    width: 3%; /* Increased from 2% to 3% */
     margin-bottom: 3%;
-    font-size: 2vmax;
+    font-size: 2.5vmax; /* Increased from 2vmax to 2.5vmax */
+    cursor: pointer;
+    user-select: none;
+    padding: 10px; /* Added padding */
+    transition: all 0.3s ease;
 }
 
 .rightturn:hover {
-    color: black;
+    transform: scale(1.1);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 #statusmode {
     display: inline-block;
     color: black;
-    width: 10%;
-    font-size: 2vmax;
-    /*
-    background: #00a800;
-    border: 1.5vmin solid white;
-    border-radius: 50px;
-    margin: 1%;
-    transition: 0.5s;*/
+    width: 15%; /* Increased from 10% to 15% */
+    font-size: 2.5vmax; /* Increased from 2vmax to 2.5vmax */
+    cursor: pointer;
+    user-select: none;
+    padding: 10px 15px; /* Added padding */
+    border-radius: 5px; /* Added rounded corners */
+    margin: 0 10px; /* Added some horizontal margin */
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
 }
 
 #statusmode:hover {
-    border: 0vmin solid white;
+    transform: scale(1.05); /* Slight increase in size on hover */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Add a subtle glow effect */
 }
 
 #statusmode[mode="easy"] {
@@ -154,9 +195,11 @@ a:hover {
 #mainmenu {
     display: none;
     position: fixed;
-    top: calc(50% - 40vh);
-    left: 20%;
-    width: 60%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 800px;
     height: 80vh;
     background: rgba(1, 0, 0, 0.5);
     text-align: center;
@@ -167,16 +210,18 @@ a:hover {
 }
 
 #menu {
-    margin-top: 50vh;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 
 .mainlogo {
     width: 70%;
-    height: 40%;
-    position: absolute;
-    left: 15%;
-    top: 15vh;
+    max-width: 400px;
+    height: auto;
+    position: static;
+    margin-bottom: 2rem;
 }
 
 .overlay {
@@ -204,14 +249,33 @@ a:hover {
     background: #fff;
     border-radius: 5px;
     width: 30%;
-    height: 60%;
+    max-height: 80vh; /* Set a maximum height */
     position: relative;
-    /*
-    border: 10px solid #86d9ff;
-    border-radius: 50px;
-    box-shadow: 0px 0px 100px #03A9F4;
-    position: relative;
-    transition: all .5s ease-in-out;*/
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+/* Add some padding to the bottom to ensure last paragraph is fully visible when scrolled */
+.popup > *:last-child {
+    padding-bottom: 20px;
+}
+
+/* Style the scrollbar for webkit browsers */
+.popup::-webkit-scrollbar {
+    width: 10px;
+}
+
+.popup::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 5px;
+}
+
+.popup::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+
+.popup::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
 .popup h1 {
@@ -244,132 +308,174 @@ a:hover {
     to {opacity: 1;}
 }
 
-#gamewin {
+#gamewin, #gameover {
     display: none;
     position: fixed;
-    width: 97%;
-    height: 92%;
-    background: rgba(87, 87, 87, 0.5);
-    text-align: center;
-    border: 10px solid #8fff86;
-    /*border-radius: 50px;*/
-    box-shadow: 0px 0px 100px #42f403;
-    /*font-size: 4vmax;*/
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+#gamewin h2, #gameover h2 {
+    font-size: 3rem;
+    color: white;
+    margin-bottom: 2rem;
+}
+
+#gamewin .scoreEnd, #gameover .scoreEnd {
+    font-size: 2rem;
+    color: white;
+    margin-bottom: 2rem;
+}
+
+#gamewin a, #gameover a {
+    font-size: 1.5rem;
+    padding: 1rem 2rem;
+    background-color: white;
+    color: black;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer; /* Add this line */
+    user-select: none; /* Prevent text selection */
 }
 
 .win {
     color: white;
     text-shadow: 0px 0px 250px #00ef00;
-    font-size: 5vmax;
+    font-size: clamp(2rem, 6vw, 5rem);
+    margin-bottom: 2rem;
 }
 
 #gameover {
-    display: none;
-    position: fixed;
-    width: 97%;
-    height: 92%;
     background: rgba(87, 87, 87, 0.5);
-    text-align: center;
-    border: 10px solid #ff8686;
-    /*border-radius: 50px;*/
-    box-shadow: 0px 0px 100px #f40303;
+    border: none; /* Remove the border */
+    box-shadow: none; /* Remove the box-shadow */
 }
 
 .lose {
     color: white;
     text-shadow: 0px 0px 250px #ef0000;
-    font-size: 5vmax;
+    font-size: clamp(2rem, 6vw, 5rem);
+    margin-bottom: 2rem;
 }
 
 
 .menuLogo {
-    width: 9%;
+    width: auto;
     height: 4vh;
-    margin-top: -1vh;
-    margin-left: 92vh;
+    position: absolute;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.healthBar, .myhealthBar {
+    position: absolute;
+    top: 1rem;
+    width: 30%;
+    max-width: 300px;
+    margin: 10px;
 }
 
 .healthBar {
-    position: absolute;
-    top:2vmax;
-    left: calc(78% - 13vmax);
+    right: 1rem;
 }
 
-.bossHp {
+.myhealthBar {
+    left: 1rem;
+}
+
+.bossHp, .myHp {
     color: white;
-    position: absolute;
-    font-size: 1.5vmax;
-    top: 0vmax;
-    left: -4vmax;
+    font-size: clamp(0.8rem, 2vw, 1.5rem);
+    margin-bottom: 0.5rem;
 }
 
 .healthBg {
     position: relative;
-    height: 2vmax;
-    width: 30vmax;
+    height: 20px;
+    width: 100%;
     background: black;
-    left: calc(50% - 12vmax);
 }
 
 .health {
     position: relative;
-    top: calc(50% - 0.75vmax);
-    left: calc(50% - 14.5vmax);
     background: #ae0000;
-    height: 1.5vmax;
-    max-width: 29.1vmax;
+    height: 100%;
+    transition: 1s ease-in-out;
+}
+
+.myhealthBg {
+    position: relative;
+    height: 20px;
+    width: 100%;
+    background: black;
+}
+
+.myhealth {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #54eb54;
+    height: 100%;
     width: 100%;
     transition: 1s ease-in-out;
 }
 
 .images {
-    display: flex;          /* Use flexbox to control the layout */
-    justify-content: space-between; /* Add space between the images */
-    align-items: center;    /* Center the images vertically */              /* Optional: You can use `gap` to control the spacing */
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    flex-grow: 2;
+    min-height: 20vh;
+    max-height: 40vh;
+    margin-top: 13rem; /* Add this line to move the images down */
+    /* or use padding-top instead of margin-top if you prefer */
+    /* padding-top: 2rem; */
 }
 
 .images img {
-    width: auto;            /* Optional: Adjust width if needed */
-    height: auto;           /* Optional: Adjust height if needed */
-    margin: 60px 180px;         /* Horizontal space between images */
+    max-width: 30%;
+    max-height: 30vh;
+    object-fit: contain;
 }
-.questWrap{
-    margin-top: 25vh;
+
+.questWrap {
+    margin-top: 6rem; /* Keep this to maintain vertical position */
     color: white;
     text-align: center;
-    font-size: 2vmax;
+    font-size: clamp(0.8rem, 2.5vw, 1.5rem);
     letter-spacing: 2px;
-}
-
-.myhealthBar {
+    padding: 0 1rem;
+    width: 100%;
     position: absolute;
-    top: 2vmax;
-    left: calc(18% - 13vmax);
-}
-
-.myHp {
-    color: white;
-    position: absolute;
-    font-size: 1.5vmax;
-    top: 0vmax;
-    left: -3vmax;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .myhealthBg {
     position: relative;
-    height: 2vmax;
-    width: 30vmax;
+    height: 20px;
+    width: 100%;
     background: black;
-    left: calc(50% - 12vmax);
 }
 
 .myhealth {
-    position: relative;
-    top: calc(50% - 0.75vmax);
-    left: calc(50% - 14.5vmax);
+    position: absolute;
+    top: 0;
+    left: 0;
     background: #54eb54;
-    height: 1.5vmax;
-    max-width: 29.1vmax;
+    height: 100%;
     width: 100%;
     transition: 1s ease-in-out;
 }
@@ -384,29 +490,43 @@ a:hover {
     background-color: #04AF71;
 }
 
-#question-text{
-    margin: 0px;
+#question-text {
+    margin: 0;
+    max-width: 80%; /* Adjust this value as needed */
+    display: inline-block;
 }
 
 .wordsWrap {
-    margin-top: -5vh;
+    margin-top: 1rem;
     color: white;
     text-align: center;
-    font-size: 4vmax;
+    font-size: clamp(1.2rem, 4vw, 3rem);
     letter-spacing: 5px;
+    padding: 0 1rem;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .words {
-    margin: 0px;
+    margin: 0;
+    word-break: break-all;
+    max-width: 100%;
+}
+
+.span {
+    display: inline-block;
+    margin: 0 2px;
 }
 
 .time {
     position: absolute;
-    right: 5vmax;
-    top: 1vmax;
+    top: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
     color: white;
-    font-size: 2vmax;
-    left: calc(59% - 13vmax);
+    font-size: clamp(1rem, 3vw, 2rem);
 }
 
 #theTime {
@@ -414,65 +534,78 @@ a:hover {
     position: relative;
 }
 
-#score {
-    display: none;
-    /*
-    width: 15vmax;
-    height: 20vmax;
-    font-size: 2vmax;
-    text-align: center;
-    position: absolute;
-    left: 2.5vmax;
-    top: 15vmax;
-    background: rgba(0, 0, 0, 0.5);
-    
-    border: 10px solid #86d9ff;
-    border-radius: 25px;
-    box-shadow: 0px 0px 50px #03A9F4;
-    animation:colorchange 0.5s infinite alternate;*/
+/* Replace the existing #score styles with these */
+#score-container {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 3px 6px;
+    border-radius: 3px;
 }
 
-@keyframes colorchange {
-    from {border-color: #ffffff;}
-    to {border-color: #86d9ff;}
-    }
-
-.mycombo {
-    position:absolute;
+.score-item {
     color: white;
-    width: 15vmax;
-    font-size: 1.5vmax;
-    /*border-bottom: 10px solid #86d9ff;*/
-    /*margin-bottom: 5%;*/
-    animation:colorchange 0.5s infinite alternate;
-    left: calc(-26% - -28vmax);
-    top: calc(74% - 28vmax);
+    font-size: clamp(0.6rem, 1.5vw, 1rem);
+    display: inline;
+    margin-right: 3px;
 }
 
-.scoreEnd{
-    position: absolute;
-    color: white;
-    width: 15vmax;
-    font-size: 2vmax;
-    height: 75%;
-    right: calc(14% - -28vmax);
-    top: calc(140% - 30vmax);
+/* Remove any existing styles for these classes if they exist */
+.mycombo, .myscore {
+    /* Remove any existing styles */
 }
 
-.myscore {
-    position: absolute;
-    color: white;
-    width: 15vmax;
-    font-size: 2vmax;
-    height: 75%;
-    left: calc(17% - -28vmax);
-    top: calc(73% - 30vmax);
+/* Maintain the same font size for the numbers if desired */
+#updatecombo, #updatescore {
+    font-size: clamp(0.8rem, 2vw, 1.2rem);
 }
 
 #updatescores {
     font-size: 4vmax;
 }
 
-#updatescore {
-    font-size: 4vmax;
+@keyframes redFlash {
+    0% { box-shadow: inset 0 0 0 transparent; }
+    50% { box-shadow: inset 0 0 100vmax rgba(255, 0, 0, 0.8); }
+    100% { box-shadow: inset 0 0 0 transparent; }
+}
+
+.red-flash {
+    animation: redFlash 1s ease-out;
+}
+
+#feedback-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: box-shadow 0.3s ease;
+}
+
+@keyframes greenBorder {
+    0% { border-color: #86d9ff; box-shadow: 0 0 0 rgba(0, 255, 0, 0); }
+    50% { border-color: #00ff00; box-shadow: 0 0 20px rgba(0, 255, 0, 0.8), inset 0 0 20px rgba(0, 255, 0, 0.8); }
+    100% { border-color: #86d9ff; box-shadow: 0 0 0 rgba(0, 255, 0, 0); }
+}
+
+@keyframes redBorder {
+    0% { border-color: #86d9ff; box-shadow: 0 0 0 rgba(255, 0, 0, 0); }
+    50% { border-color: #ff0000; box-shadow: 0 0 20px rgba(255, 0, 0, 0.8), inset 0 0 20px rgba(255, 0, 0, 0.8); }
+    100% { border-color: #86d9ff; box-shadow: 0 0 0 rgba(255, 0, 0, 0); }
+}
+
+.green-border {
+    animation: greenBorder 0.5s ease-out;
+}
+
+.red-border {
+    animation: redBorder 0.5s ease-out;
 }

@@ -28,6 +28,23 @@ var scoreboard = document.getElementById("score");
 var playerDamaged = false; // Flag to track if player was damaged
 var bossDamaged = false; // Flag to track if boss was damaged
 
+// Add these variables at the top of your file with the other declarations
+var lastPlayerHp = 100;
+var lastBossHp = 100;
+
+// Add this function near the top of your game.js file
+function initializeGameState() {
+    // Hide all screens except the main menu
+    game.style.display = "none";
+    gamewin.style.display = "none";
+    gameover.style.display = "none";
+    scoreboard.style.display = "none";
+    mainmenu.style.display = "block";
+}
+
+// Call this function when the DOM is fully loaded
+document.addEventListener("DOMContentLoaded", initializeGameState);
+
 //Change mode
 function rightChange() {
     mode = statusmode.getAttribute('mode');
@@ -137,56 +154,50 @@ function random() {
 }
 
 function typing(e) {
-
     if (e.key.length > 1) {
         return;  // If the key pressed is not a single character, ignore it
     }
 
     typed = e.key; // Capture the typed key
+    console.log("Key pressed:", typed); // Debug log
     
     if (gameend) {
         return;
     }
    
     for (var i = 0; i < spans.length; i++) {
-
-        if (spans[i].innerHTML === typed || window.answerCopy[i] === typed) { // Match either the revealed letter or the hidden one
-            if (spans[i].classList.contains("bg")) { // If the letter is already typed, skip it
+        if (spans[i].innerHTML === typed || window.answerCopy[i] === typed) {
+            if (spans[i].classList.contains("bg")) {
                 continue;
             } else if (spans[i].classList.contains("bg") === false && spans[i-1] === undefined || spans[i-1].classList.contains("bg") !== false ) {
                 spans[i].classList.add("bg");
                 
                 if (spans[i].innerHTML === "_") {
-
-                        spans[i].innerHTML = typed;  // Replace the underscore with the typed letter if correct
-        
+                    spans[i].innerHTML = typed;
                 }
                 
-                game.style.borderColor = "#8fff86";
-                game.style.boxShadow = "0px 0px 40px #42f403";
+                console.log("Correct input detected");
+                game.classList.add("green-border");
                 combo += 1;
                 correct += 1;
                 updatecombo.innerHTML = combo;
 
                 setTimeout(function() {
-                    game.style.borderColor = "#86d9ff";
-                    game.style.boxShadow = "0px 0px 20px #03A9F4";
-                }, 1000);
+                    game.classList.remove("green-border");
+                }, 500);
                 break;
             }
         } else if (spans[i].innerHTML !== typed || spans[i].innerHTML === "_") {
-            
             if (spans[i].classList.contains("bg")) { 
                 continue;
             } else if (spans[i].classList.contains("bg") === false && spans[i-1] === undefined || spans[i-1].classList.contains("bg") !== false ) {
-                game.style.borderColor = "#ff8686";
-                game.style.boxShadow = "0px 0px 40px #f40303";
+                console.log("Incorrect input detected");
+                game.classList.add("red-border");
                 combo = 0;
                 
                 setTimeout(function() {
-                    game.style.borderColor = "#86d9ff";
-                    game.style.boxShadow = "0px 0px 20px #03A9F4";
-                }, 1000);
+                    game.classList.remove("red-border");
+                }, 500);
                 break;
             }
         }
@@ -233,49 +244,41 @@ function typing(e) {
 //Check Hp
 function check() {
     if (bossHp <= 0) {
-        myword.style.display = "none";
-        timestatus.style.display = "none";
-        scoreboard.style.display = "none";
         monster_start.style.display = "none";
         monster_die.style.display = "block";
-        gameend = true;
-        clearInterval(cd);
-        setTimeout(function() {
-            game.style.display = "none";
-            gamewin.style.display = "block";
-        }, 4000);
-        bossHp = 100;
+        setTimeout(() => {
+            showGameOver(true);
+        }, 2000);
+        return;
     }
     else if (myHp <= 0) {
-        game.style.display = "none";
-        scoreboard.style.display = "none";
-        gameover.style.display = "block";
         player_start.style.display = "none";
         player_die.style.display = "block";
-        gameend = true;
-        clearInterval(cd);
-        myHp = 100;
+        setTimeout(() => {
+            showGameOver(false);
+        }, 2000);
+        return;
     }
 
-        // Check for boss damage and apply shake once
-        if (bossHp < 100 && !bossDamaged) {
-            bossDamaged = true; // Set the flag
-            monster_start.classList.add('shake');
-            setTimeout(() => {
-                monster_start.classList.remove('shake');
-                bossDamaged = false; // Reset the flag after shaking
-            }, 500); // Duration should match the animation duration
-        }
-    
-        // Check for player damage and apply shake once
-        if (myHp < 100 && !playerDamaged) {
-            playerDamaged = true; // Set the flag
-           player_start.classList.add('shake');
-            setTimeout(() => {
-                player_start.classList.remove('shake');
-                playerDamaged = false; // Reset the flag after shaking
-            }, 500); // Duration should match the animation duration
-        }
+    // Check for boss damage
+    if (bossHp < lastBossHp) {
+        monster_start.classList.add('shake-animation');
+        setTimeout(() => {
+            monster_start.classList.remove('shake-animation');
+        }, 1000);
+        lastBossHp = bossHp;
+    }
+
+    // Check for player damage
+    if (myHp < lastPlayerHp) {
+        player_start.classList.add('shake-animation');
+        game.classList.add('red-flash');
+        setTimeout(() => {
+            player_start.classList.remove('shake-animation');
+            game.classList.remove('red-flash');
+        }, 1000);
+        lastPlayerHp = myHp;
+    }
 
     requestAnimationFrame(check);
 }
@@ -302,26 +305,21 @@ function updateTime() {
     if (time <= 0 && hit == 0) {
         myHp -= damage;
         myhealth.style.width = myHp + "%";
-
-           // Only shake player if they take damage
-           if (myHp > 0) { // Check if player is still alive
-            if (!playerDamaged) { // Only shake if not already shaking
-                playerDamaged = true; // Set the flag
-                player_start.classList.add('shake');
-                setTimeout(() => {
-                    player_start.classList.remove('shake');
-                    playerDamaged = false; // Reset the flag after shaking
-                }, 500); // Duration should match the animation duration
-            }
-        }
-
         combo = 0;
         updatecombo.innerHTML = combo;
-        
         updatecombo.style.color = "white";
         random();
-        time = totaltime+1;
+        time = totaltime + 1;
     }
+}
+
+function shakeElement(element) {
+    element.classList.remove('shake');
+    void element.offsetWidth; // Trigger reflow
+    element.classList.add('shake');
+    setTimeout(() => {
+        element.classList.remove('shake');
+    }, 500);
 }
 
 function inflictDamageToBoss() {
@@ -332,9 +330,8 @@ function inflictDamageToBoss() {
     if (bossHp > 0) { // Check if boss is still alive
         if (!bossDamaged) { // Only shake if not already shaking
             bossDamaged = true; // Set the flag
-            monster_start.classList.add('shake');
+            shakeElement(monster_start);
             setTimeout(() => {
-                monster_start.classList.remove('shake');
                 bossDamaged = false; // Reset the flag after shaking
             }, 500); // Duration should match the animation duration
         }
@@ -382,13 +379,61 @@ function startGame() {
 mainmenu.style.display = "block";
 //Set to Menu
 function menuGame() {
-    //document.body.style.backgroundImage = "url('./img/bg.jpg')";
     game.style.display = "none";
     gamewin.style.display = "none";
     gameover.style.display = "none";
     scoreboard.style.display = "none";
     mainmenu.style.display = "block";
     level.style.display = "block";
+    
+    // Reset game state
+    bossHp = 100;
+    myHp = 100;
+    score = 0;
+    combo = 0;
+    gameend = false;
+    
+    // Reset UI elements
+    health.style.width = "100%";
+    myhealth.style.width = "100%";
+    updatecombo.innerHTML = "0";
+    updatescore.innerHTML = "0";
+    
+    // Reset player and monster images
+    player_start.style.display = "block";
+    player_die.style.display = "none";
+    monster_start.style.display = "block";
+    monster_die.style.display = "none";
 }
 
 document.addEventListener("keydown", typing, false);
+
+function showGameOver(isWin) {
+    // Hide all game elements
+    game.style.display = "none";
+    scoreboard.style.display = "none";
+    mainmenu.style.display = "none";
+    level.style.display = "none";
+
+    // Show the appropriate end screen
+    if (isWin) {
+        gamewin.style.display = "flex";
+        gameover.style.display = "none";
+    } else {
+        gamewin.style.display = "none";
+        gameover.style.display = "flex";
+    }
+
+    // Update the final score
+    document.querySelectorAll('.scoreEnd span').forEach(span => {
+        span.textContent = score;
+    });
+
+    gameend = true;
+    clearInterval(cd);
+}
+
+
+
+
+

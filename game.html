@@ -27,6 +27,7 @@
             <p>3. Don't worry about typos—just keep typing and avoid using backspace!</p> 
             <p>4. If you fail to complete the word in time, you'll take damage. If your health reaches zero, the game ends!</p> 
             <p>5. Typing consecutive correct answers will earn you a combo! You'll receive a stacking 0.5 point multiplier for every 10 correct inputs, but you'll lose it if you make a mistake!</p>
+            <p>----- </p>
             <a class="close" href="#Close">&times;</a>
           </div>
         </div>
@@ -43,7 +44,7 @@
                 </div>
             </div>
             <div class="myhealthBar">
-                <div class="myHp">My Hp :</div>
+                <div class="myHp">Player Hp :</div>
                 <div class="myhealthBg">
                     <div class="myhealth"></div>
                 </div>
@@ -69,6 +70,13 @@
         </div>
     </div>
 
+    <div id="score-container">
+        <div id="score">
+            <div class="score-item mycombo">Combo : <span id="updatecombo">0</span></div>
+            <div class="score-item myscore">Score : <span id="updatescore">0</span></div>
+        </div>
+    </div>
+
     <div id="gamewin">
         <h2 class="win">You Defeated The Monster!</h2>
         <div class="scoreEnd">Score : <span id="updatescores">0</span></div>
@@ -79,11 +87,6 @@
         <h2 class="lose">You got killed!</h2>
         <div class="scoreEnd">Score : <span id="updatescores">0</span></div>
         <a href="#Menu" onclick="menuGame()">Play Again</a>
-    </div>
-
-    <div id="score">
-        <div class="mycombo">Combo : <span id="updatecombo">0</span></div>
-        <div class="myscore">Score : <span id="updatescore">0</span></div>
     </div>
 
     <div id="preload">
@@ -100,6 +103,8 @@
         <img src="./img/player.gif">
         <img src="./img/player-die.gif">
     </div>
+
+    <div id="feedback-overlay"></div>
 
     <script src="questions.js"></script>
     <script src="game.js"></script>
