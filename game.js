@@ -25,6 +25,9 @@ var updatescores = document.getElementById("updatescores");
 var updatescore = document.getElementById("updatescore");
 var scoreboard = document.getElementById("score");
 
+var updatepoints = document.getElementById('updatedpoints')
+
+var current_mode;
 var playerDamaged = false; // Flag to track if player was damaged
 var bossDamaged = false; // Flag to track if boss was damaged
 
@@ -65,7 +68,7 @@ function rightChange() {
 //Set Game
 function setGame() {
     mymonster = Math.floor(Math.random()*1000)%5;
-    bossHp = 100;
+    bossHp = 10;
     health.style.width = 100 + "%";
     myHp = 100;
     myhealth.style.width = 100 + "%";
@@ -96,16 +99,21 @@ function setGame() {
 function setMode(mode) {
     mode = (mode == undefined) ? "easy": (mode == "easy") ? "medium": (mode == "medium") ? "hard": "easy";
     if(mode == "easy") {
-        timemode = 4;
+        timemode = 5;
         damage = 10;
+        current_mode = 0
     }
     else if(mode == "medium") {
-        timemode = 3;
+        timemode = 4;
         damage = 15;
+        current_mode = "medium"
+        getPoints(current_mode)
     }
     else if(mode == "hard") {
-        timemode = 2;
+        timemode = 3;
         damage = 20;
+        current_mode = "hard"
+        getPoints(current_mode)
     }
     totaltime = timemode;
     delayStart();
@@ -194,7 +202,15 @@ function typing(e) {
                 console.log("Incorrect input detected");
                 game.classList.add("red-border");
                 combo = 0;
-                
+                //bawas buhay pag typo
+                if(current_mode === "medium"){
+                    myHp -= 1;
+                    myhealth.style.width = myHp + "%";
+                }else if(current_mode === 'hard'){  
+                    myHp -= 2;
+                    myhealth.style.width = myHp + "%";
+                }
+
                 setTimeout(function() {
                     game.classList.remove("red-border");
                 }, 500);
@@ -216,7 +232,6 @@ function typing(e) {
             console.log("update:" + updatescore.innerHTML)
             updatescores.innerHTML = score;
             console.log("update:" + updatescores.innerHTML)
-
 
             document.removeEventListener("keydown", typing, false);
             setTimeout(function(){
@@ -379,6 +394,7 @@ function startGame() {
 mainmenu.style.display = "block";
 //Set to Menu
 function menuGame() {
+
     game.style.display = "none";
     gamewin.style.display = "none";
     gameover.style.display = "none";
@@ -416,9 +432,11 @@ function showGameOver(isWin) {
     level.style.display = "none";
 
     // Show the appropriate end screen
+
     if (isWin) {
-        gamewin.style.display = "flex";
-        gameover.style.display = "none";
+            gamewin.style.display = "flex";
+            gameover.style.display = "none";
+        
     } else {
         gamewin.style.display = "none";
         gameover.style.display = "flex";
@@ -426,11 +444,45 @@ function showGameOver(isWin) {
 
     // Update the final score
     document.querySelectorAll('.scoreEnd span').forEach(span => {
-        span.textContent = score;
+        span.textContent = getScore(mode);
     });
+    document.querySelectorAll('.scorePoints span').forEach(span => {
+        span.textContent = getPoints(mode);
+    });
+
+    window.parent.postMessage({
+        type: "gathered-points",
+        py_data:{
+            points: getPoints(mode)
+        }
+    } , "*")
+
+    console.log('here')
 
     gameend = true;
     clearInterval(cd);
+}
+
+function getScore(mode) {
+    if(current_mode === 'medium'){
+        
+        return score + ' + 100pts';
+    }else if(mode === 'hard') {
+        return score + ' + 500pts'
+    }
+    return score;
+}
+
+function getPoints(mode){
+   const points = Math.floor(score/50)
+    if(current_mode === 'medium'){
+        const points = Math.floor((score + 100)/50)
+        return points
+    }else if(mode === 'hard') {
+        const points = Math.floor((score + 500)/50)
+        return points
+    }
+    return points;
 }
 
 
