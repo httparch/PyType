@@ -101,7 +101,7 @@ function setMode(mode) {
     if(mode == "easy") {
         timemode = 5;
         damage = 10;
-        current_mode = 0
+       
     }
     else if(mode == "medium") {
         timemode = 4;
@@ -467,7 +467,7 @@ function getScore(mode) {
     if(current_mode === 'medium'){
         
         return score + ' + 100pts';
-    }else if(mode === 'hard') {
+    }else if(current_mode === 'hard') {
         return score + ' + 500pts'
     }
     return score;
@@ -477,9 +477,11 @@ function getPoints(mode){
    const points = Math.floor(score/50)
     if(current_mode === 'medium'){
         const points = Math.floor((score + 100)/50)
+        console.log(points)
         return points
-    }else if(mode === 'hard') {
+    }else if(current_mode === 'hard') {
         const points = Math.floor((score + 500)/50)
+        console.log(points)
         return points
     }
     return points;
