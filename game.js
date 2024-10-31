@@ -424,6 +424,10 @@ function menuGame() {
 
 document.addEventListener("keydown", typing, false);
 
+function getCurrentHp(){
+    return myHp;
+}
+
 function showGameOver(isWin) {
     // Hide all game elements
     game.style.display = "none";
@@ -453,7 +457,9 @@ function showGameOver(isWin) {
     window.parent.postMessage({
         type: "gathered-points",
         py_data:{
-            points: getPoints(mode)
+            points: getPoints(mode),
+            game_mode: current_mode,
+            current_hp: getCurrentHp()
         }
     } , "*")
 
