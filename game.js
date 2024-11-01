@@ -246,17 +246,6 @@ function typing(e) {
             updatescores.innerHTML = score;
             console.log("update:" + updatescores.innerHTML)
 
-<<<<<<< HEAD
-            // Play damage sound when hitting the boss
-            if (!isMuted) {
-                inflictEnemySound.currentTime = 0; // Reset sound to start
-                inflictEnemySound.play().catch(function(error) {
-                    console.log("Inflict enemy sound failed to play:", error);
-                });
-            }
-
-=======
->>>>>>> 69fa91184b68a283a4aca9d771cddf3c350ef703
             document.removeEventListener("keydown", typing, false);
             setTimeout(function(){
                 words.className = "words"; // restart the classes
@@ -459,25 +448,12 @@ function showGameOver(isWin) {
     mainmenu.style.display = "none";
     level.style.display = "none";
 
-<<<<<<< HEAD
-    // Show the appropriate end screen and play sound
-    if (isWin) {
-        gamewin.style.display = "flex";
-        gameover.style.display = "none";
-        // Play enemy death sound if not muted
-        if (!isMuted) {
-            enemyDieSound.play().catch(function(error) {
-                console.log("Enemy die sound failed to play:", error);
-            });
-        }
-=======
     // Show the appropriate end screen
 
     if (isWin) {
             gamewin.style.display = "flex";
             gameover.style.display = "none";
         
->>>>>>> 69fa91184b68a283a4aca9d771cddf3c350ef703
     } else {
         gamewin.style.display = "none";
         gameover.style.display = "flex";
@@ -512,45 +488,6 @@ function showGameOver(isWin) {
     clearInterval(cd);
 }
 
-<<<<<<< HEAD
-function initializeAudio() {
-    // Set initial state based on localStorage
-    bgMusic.muted = isMuted;
-    updateMusicButton();
-    
-    // Add error handling and user interaction requirement for audio
-    bgMusic.play().catch(function(error) {
-        console.log("Background music failed to play:", error);
-        // Add a one-time click handler to start music
-        document.body.addEventListener('click', function startAudio() {
-            bgMusic.play().catch(console.error);
-            document.body.removeEventListener('click', startAudio);
-        });
-    });
-    
-    // Add click handler for the music toggle button
-    musicToggle.addEventListener('click', function() {
-        isMuted = !isMuted;
-        bgMusic.muted = isMuted;
-        
-        // If unmuting, try to play the music
-        if (!isMuted) {
-            bgMusic.play().catch(console.error);
-        }
-        
-        enemyDieSound.muted = isMuted;
-        playerDieSound.muted = isMuted;
-        inflictEnemySound.muted = isMuted;
-        localStorage.setItem('isMuted', isMuted);
-        updateMusicButton();
-    });
-}
-
-function updateMusicButton() {
-    const icon = musicToggle.querySelector('.music-icon');
-    icon.textContent = isMuted ? '🔇' : '🔊';
-}
-=======
 function getScore(mode) {
     if(current_mode === 'medium'){
         
@@ -577,6 +514,5 @@ function getPoints(mode){
 
 
 
->>>>>>> 69fa91184b68a283a4aca9d771cddf3c350ef703
 
 
