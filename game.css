@@ -235,7 +235,10 @@ a * {
     transition: opacity 500ms;
     visibility: hidden;
     opacity: 0;
-  }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 .overlay:target {
     visibility: visible;
@@ -243,19 +246,37 @@ a * {
 }
 
 .popup {
-    text-align: left;
-    font-size: 1.25vmax;
-    margin: 7% auto;
-    padding: 20px;
+    width: 80%;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 30px;
     background: #fff;
     border-radius: 5px;
-    width: 30%;
-    max-height: 80vh; /* Set a maximum height */
     position: relative;
-    overflow-y: auto; /* Enable vertical scrolling */
 }
 
-/* Add some padding to the bottom to ensure last paragraph is fully visible when scrolled */
+.popup h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.popup p {
+    text-align: left;
+    margin-left: 20px; /* Add left indentation */
+    line-height: 1.6; /* Improve readability with line spacing */
+    margin-bottom: 15px; /* Space between paragraphs */
+}
+
+.popup .close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 24px;
+    text-decoration: none;
+    color: #333;
+}
+
+/* Optional: Add some padding to the bottom to ensure last paragraph is fully visible when scrolled */
 .popup > *:last-child {
     padding-bottom: 20px;
 }
@@ -641,8 +662,29 @@ a * {
     box-shadow: 0 0 15px rgba(134, 217, 255, 0.5);
 }
 
+.music-btn:focus {
+    outline: none;
+}
+
+.music-icon {
+    font-size: 24px;
+    line-height: 1;
+    user-select: none;
+}
+
+/* Hide audio elements */
+audio {
+    display: none;
+}
+
+/* Optional: Add a visual feedback when music is muted */
+.music-btn.muted {
+    opacity: 0.7;
+    border-color: rgba(134, 217, 255, 0.5);
+}
+
 .music-btn.muted .music-icon {
-    content: '🔇';
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .howtoplay-link {

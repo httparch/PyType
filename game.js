@@ -44,6 +44,8 @@ var lastBossHp = 100;
 var enemyDieSound = document.getElementById('enemyDieSound');
 var playerDieSound = document.getElementById('playerDieSound');
 var inflictEnemySound = document.getElementById('inflictEnemySound');
+var inflictPlayerSound = document.getElementById('inflictPlayerSound');
+var keyPressSound = document.getElementById('keyPressSound');
 
 // Add this function near the top of your game.js file
 function initializeGameState() {
@@ -179,6 +181,15 @@ function typing(e) {
         return;  // If the key pressed is not a single character, ignore it
     }
 
+    // Play key press sound
+    if (!isMuted && keyPressSound) {
+        keyPressSound.currentTime = 0;
+        keyPressSound.volume = 0.3; // Lower volume for frequent sounds
+        keyPressSound.play().catch(function(error) {
+            console.log("Key press sound failed to play:", error);
+        });
+    }
+
     typed = e.key; // Capture the typed key
     console.log("Key pressed:", typed); // Debug log
     
@@ -256,6 +267,18 @@ function typing(e) {
             }, 400);
             bossHp -= 10;
             health.style.width = bossHp + "%";
+            
+            // Update the sound playing code
+            if (!isMuted && inflictEnemySound) {
+                // Reset the audio to start
+                inflictEnemySound.currentTime = 0;
+                // Set volume
+                inflictEnemySound.volume = 0.5;
+                // Try to play with error handling
+                inflictEnemySound.play().catch(function(error) {
+                    console.log("Inflict enemy sound failed to play:", error);
+                });
+            }
         }
     }
 
@@ -274,6 +297,16 @@ function check() {
     if (bossHp <= 0) {
         monster_start.style.display = "none";
         monster_die.style.display = "block";
+        
+        // Play enemy death sound if not muted
+        if (!isMuted && enemyDieSound) {
+            enemyDieSound.currentTime = 0;
+            enemyDieSound.volume = 0.5;
+            enemyDieSound.play().catch(function(error) {
+                console.log("Enemy die sound failed to play:", error);
+            });
+        }
+        
         setTimeout(() => {
             showGameOver(true);
         }, 2000);
@@ -301,6 +334,16 @@ function check() {
     if (myHp < lastPlayerHp) {
         player_start.classList.add('shake-animation');
         game.classList.add('red-flash');
+        
+        // Play player hurt sound if not muted
+        if (!isMuted && inflictPlayerSound) {
+            inflictPlayerSound.currentTime = 0;
+            inflictPlayerSound.volume = 0.5;
+            inflictPlayerSound.play().catch(function(error) {
+                console.log("Player hurt sound failed to play:", error);
+            });
+        }
+
         setTimeout(() => {
             player_start.classList.remove('shake-animation');
             game.classList.remove('red-flash');
@@ -510,6 +553,89 @@ function getPoints(mode){
         return points
     }
     return points;
+}
+
+function initializeAudio() {
+    console.log("Initializing audio...");
+    
+    // Initialize all audio elements with proper volume
+    if (inflictEnemySound) {
+        inflictEnemySound.volume = 0.5;
+    }
+    if (inflictPlayerSound) {
+        inflictPlayerSound.volume = 0.5;
+    }
+    if (enemyDieSound) {
+        enemyDieSound.volume = 0.5;
+    }
+    if (keyPressSound) {
+        keyPressSound.volume = 0.3; // Lower volume since it plays frequently
+    }
+    
+    // Set initial volume lower
+    bgMusic.volume = 0.3;
+    
+    // Get stored mute preference, default to false if not stored
+    isMuted = false; // Changed this line to always start unmuted
+    localStorage.setItem('isMuted', 'false'); // Ensure localStorage is set to unmuted
+    
+    // Set initial state
+    bgMusic.muted = isMuted;
+    updateMusicButton();
+
+    // Function to try playing music
+    async function tryPlayMusic() {
+        if (isMuted) return; // Don't try to play if muted
+        
+        try {
+            // Set loop and autoplay attributes
+            bgMusic.loop = true;
+            bgMusic.autoplay = true;
+            
+            await bgMusic.play();
+            console.log("Music started successfully");
+        } catch (error) {
+            console.log("Autoplay failed:", error);
+            
+            // Fallback: try to play on first user interaction
+            const playOnInteraction = async () => {
+                if (!isMuted) {
+                    try {
+                        await bgMusic.play();
+                        console.log("Music started after interaction");
+                        // Remove listener after successful play
+                        document.removeEventListener('click', playOnInteraction);
+                    } catch (err) {
+                        console.error("Failed to play music:", err);
+                    }
+                }
+            };
+
+            document.addEventListener('click', playOnInteraction, { once: true });
+        }
+    }
+
+    // Try to play immediately
+    tryPlayMusic();
+    
+    // Music toggle button handler
+    musicToggle.addEventListener('click', function() {
+        isMuted = !isMuted;
+        bgMusic.muted = isMuted;
+        localStorage.setItem('isMuted', isMuted);
+        updateMusicButton();
+        
+        // If unmuting, try to play
+        if (!isMuted) {
+            tryPlayMusic();
+        }
+    });
+}
+
+// Add this function near your other audio-related functions
+function updateMusicButton() {
+    const icon = musicToggle.querySelector('.music-icon');
+    icon.textContent = isMuted ? '🔇' : '🔊';
 }
 
 
