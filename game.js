@@ -30,6 +30,9 @@ var updatescores = document.getElementById("updatescores");
 var updatescore = document.getElementById("updatescore");
 var scoreboard = document.getElementById("score");
 
+var updatepoints = document.getElementById('updatedpoints')
+
+var current_mode;
 var playerDamaged = false; // Flag to track if player was damaged
 var bossDamaged = false; // Flag to track if boss was damaged
 
@@ -109,16 +112,21 @@ function setGame() {
 function setMode(mode) {
     mode = (mode == undefined) ? "easy": (mode == "easy") ? "medium": (mode == "medium") ? "hard": "easy";
     if(mode == "easy") {
-        timemode = 4;
+        timemode = 5;
         damage = 10;
+       
     }
     else if(mode == "medium") {
-        timemode = 3;
+        timemode = 4;
         damage = 15;
+        current_mode = "medium"
+        getPoints(current_mode)
     }
     else if(mode == "hard") {
-        timemode = 2;
+        timemode = 3;
         damage = 20;
+        current_mode = "hard"
+        getPoints(current_mode)
     }
     totaltime = timemode;
     delayStart();
@@ -207,7 +215,15 @@ function typing(e) {
                 console.log("Incorrect input detected");
                 game.classList.add("red-border");
                 combo = 0;
-                
+                //bawas buhay pag typo
+                if(current_mode === "medium"){
+                    myHp -= 1;
+                    myhealth.style.width = myHp + "%";
+                }else if(current_mode === 'hard'){  
+                    myHp -= 2;
+                    myhealth.style.width = myHp + "%";
+                }
+
                 setTimeout(function() {
                     game.classList.remove("red-border");
                 }, 500);
@@ -230,6 +246,7 @@ function typing(e) {
             updatescores.innerHTML = score;
             console.log("update:" + updatescores.innerHTML)
 
+<<<<<<< HEAD
             // Play damage sound when hitting the boss
             if (!isMuted) {
                 inflictEnemySound.currentTime = 0; // Reset sound to start
@@ -238,6 +255,8 @@ function typing(e) {
                 });
             }
 
+=======
+>>>>>>> 69fa91184b68a283a4aca9d771cddf3c350ef703
             document.removeEventListener("keydown", typing, false);
             setTimeout(function(){
                 words.className = "words"; // restart the classes
@@ -399,6 +418,7 @@ function startGame() {
 mainmenu.style.display = "block";
 //Set to Menu
 function menuGame() {
+
     game.style.display = "none";
     gamewin.style.display = "none";
     gameover.style.display = "none";
@@ -428,6 +448,10 @@ function menuGame() {
 
 document.addEventListener("keydown", typing, false);
 
+function getCurrentHp(){
+    return myHp;
+}
+
 function showGameOver(isWin) {
     // Hide all game elements
     game.style.display = "none";
@@ -435,6 +459,7 @@ function showGameOver(isWin) {
     mainmenu.style.display = "none";
     level.style.display = "none";
 
+<<<<<<< HEAD
     // Show the appropriate end screen and play sound
     if (isWin) {
         gamewin.style.display = "flex";
@@ -445,6 +470,14 @@ function showGameOver(isWin) {
                 console.log("Enemy die sound failed to play:", error);
             });
         }
+=======
+    // Show the appropriate end screen
+
+    if (isWin) {
+            gamewin.style.display = "flex";
+            gameover.style.display = "none";
+        
+>>>>>>> 69fa91184b68a283a4aca9d771cddf3c350ef703
     } else {
         gamewin.style.display = "none";
         gameover.style.display = "flex";
@@ -458,13 +491,28 @@ function showGameOver(isWin) {
 
     // Update the final score
     document.querySelectorAll('.scoreEnd span').forEach(span => {
-        span.textContent = score;
+        span.textContent = getScore(mode);
     });
+    document.querySelectorAll('.scorePoints span').forEach(span => {
+        span.textContent = getPoints(mode);
+    });
+
+    window.parent.postMessage({
+        type: "gathered-points",
+        py_data:{
+            points: getPoints(mode),
+            game_mode: current_mode,
+            current_hp: getCurrentHp()
+        }
+    } , "*")
+
+    console.log('here')
 
     gameend = true;
     clearInterval(cd);
 }
 
+<<<<<<< HEAD
 function initializeAudio() {
     // Set initial state based on localStorage
     bgMusic.muted = isMuted;
@@ -502,5 +550,33 @@ function updateMusicButton() {
     const icon = musicToggle.querySelector('.music-icon');
     icon.textContent = isMuted ? '🔇' : '🔊';
 }
+=======
+function getScore(mode) {
+    if(current_mode === 'medium'){
+        
+        return score + ' + 100pts';
+    }else if(current_mode === 'hard') {
+        return score + ' + 500pts'
+    }
+    return score;
+}
+
+function getPoints(mode){
+   const points = Math.floor(score/50)
+    if(current_mode === 'medium'){
+        const points = Math.floor((score + 100)/50)
+        console.log(points)
+        return points
+    }else if(current_mode === 'hard') {
+        const points = Math.floor((score + 500)/50)
+        console.log(points)
+        return points
+    }
+    return points;
+}
+
+
+
+>>>>>>> 69fa91184b68a283a4aca9d771cddf3c350ef703
 
 

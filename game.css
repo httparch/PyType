@@ -332,7 +332,7 @@ a * {
     margin-bottom: 2rem;
 }
 
-#gamewin .scoreEnd, #gameover .scoreEnd {
+#gamewin .scoreEnd, #gameover .scoreEnd, .scorePoints {
     font-size: 2rem;
     color: white;
     margin-bottom: 2rem;
@@ -562,11 +562,15 @@ a * {
 }
 
 /* Maintain the same font size for the numbers if desired */
-#updatecombo, #updatescore {
+#updatecombo, #updatescore, #updatepoints {
     font-size: clamp(0.8rem, 2vw, 1.2rem);
 }
 
 #updatescores {
+    font-size: 4vmax;
+}
+
+#updatepoints {
     font-size: 4vmax;
 }
 
