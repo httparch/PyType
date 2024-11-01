@@ -1,4 +1,9 @@
 var spans = 0, bossHp, myHp, time, mode, timemode, totaltime, damage, hit, correct, combo, score, myTime, gameend;
+// Add these new variables here
+var bgMusic = document.getElementById('bgMusic');
+var musicToggle = document.getElementById('musicToggle');
+var isMuted = localStorage.getItem('isMuted') === 'true';
+
 var words = document.querySelector(".words");
 var health = document.querySelector(".health");
 var myhealth = document.querySelector(".myhealth");
@@ -32,6 +37,11 @@ var bossDamaged = false; // Flag to track if boss was damaged
 var lastPlayerHp = 100;
 var lastBossHp = 100;
 
+// Add with your other variable declarations at the top
+var enemyDieSound = document.getElementById('enemyDieSound');
+var playerDieSound = document.getElementById('playerDieSound');
+var inflictEnemySound = document.getElementById('inflictEnemySound');
+
 // Add this function near the top of your game.js file
 function initializeGameState() {
     // Hide all screens except the main menu
@@ -43,7 +53,10 @@ function initializeGameState() {
 }
 
 // Call this function when the DOM is fully loaded
-document.addEventListener("DOMContentLoaded", initializeGameState);
+document.addEventListener("DOMContentLoaded", function() {
+    initializeGameState();
+    initializeAudio(); // Add this line
+});
 
 //Change mode
 function rightChange() {
@@ -217,6 +230,13 @@ function typing(e) {
             updatescores.innerHTML = score;
             console.log("update:" + updatescores.innerHTML)
 
+            // Play damage sound when hitting the boss
+            if (!isMuted) {
+                inflictEnemySound.currentTime = 0; // Reset sound to start
+                inflictEnemySound.play().catch(function(error) {
+                    console.log("Inflict enemy sound failed to play:", error);
+                });
+            }
 
             document.removeEventListener("keydown", typing, false);
             setTimeout(function(){
@@ -415,13 +435,25 @@ function showGameOver(isWin) {
     mainmenu.style.display = "none";
     level.style.display = "none";
 
-    // Show the appropriate end screen
+    // Show the appropriate end screen and play sound
     if (isWin) {
         gamewin.style.display = "flex";
         gameover.style.display = "none";
+        // Play enemy death sound if not muted
+        if (!isMuted) {
+            enemyDieSound.play().catch(function(error) {
+                console.log("Enemy die sound failed to play:", error);
+            });
+        }
     } else {
         gamewin.style.display = "none";
         gameover.style.display = "flex";
+        // Play player death sound if not muted
+        if (!isMuted) {
+            playerDieSound.play().catch(function(error) {
+                console.log("Player die sound failed to play:", error);
+            });
+        }
     }
 
     // Update the final score
@@ -433,7 +465,42 @@ function showGameOver(isWin) {
     clearInterval(cd);
 }
 
+function initializeAudio() {
+    // Set initial state based on localStorage
+    bgMusic.muted = isMuted;
+    updateMusicButton();
+    
+    // Add error handling and user interaction requirement for audio
+    bgMusic.play().catch(function(error) {
+        console.log("Background music failed to play:", error);
+        // Add a one-time click handler to start music
+        document.body.addEventListener('click', function startAudio() {
+            bgMusic.play().catch(console.error);
+            document.body.removeEventListener('click', startAudio);
+        });
+    });
+    
+    // Add click handler for the music toggle button
+    musicToggle.addEventListener('click', function() {
+        isMuted = !isMuted;
+        bgMusic.muted = isMuted;
+        
+        // If unmuting, try to play the music
+        if (!isMuted) {
+            bgMusic.play().catch(console.error);
+        }
+        
+        enemyDieSound.muted = isMuted;
+        playerDieSound.muted = isMuted;
+        inflictEnemySound.muted = isMuted;
+        localStorage.setItem('isMuted', isMuted);
+        updateMusicButton();
+    });
+}
 
-
+function updateMusicButton() {
+    const icon = musicToggle.querySelector('.music-icon');
+    icon.textContent = isMuted ? '🔇' : '🔊';
+}
 
 

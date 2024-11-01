@@ -151,6 +151,7 @@ a * {
     user-select: none;
     padding: 10px; /* Added padding */
     transition: all 0.3s ease;
+    border-radius: 0; /* Remove border radius for sharp corners */
 }
 
 .rightturn:hover {
@@ -166,7 +167,7 @@ a * {
     cursor: pointer;
     user-select: none;
     padding: 10px 15px; /* Added padding */
-    border-radius: 5px; /* Added rounded corners */
+    border-radius: 0; /* Remove border radius for sharp corners */
     margin: 0 10px; /* Added some horizontal margin */
     transition: all 0.3s ease; /* Smooth transition for hover effects */
 }
@@ -609,3 +610,48 @@ a * {
 .red-border {
     animation: redBorder 0.5s ease-out;
 }
+
+.music-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid #86d9ff;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.music-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(134, 217, 255, 0.5);
+}
+
+.music-btn.muted .music-icon {
+    content: '🔇';
+}
+
+.howtoplay-link {
+    background: none;
+    text-decoration: none;
+    color: white; /* or whatever color you want */
+}
+
+.howtoplay-link:hover {
+    text-decoration: underline; /* optional: adds underline on hover */
+}
+
+#mylevel a {
+    border-radius: 0; /* This ensures any other level-related links also have sharp corners */
+}
+
