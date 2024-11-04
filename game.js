@@ -83,7 +83,7 @@ function rightChange() {
 //Set Game
 function setGame() {
     mymonster = Math.floor(Math.random()*1000)%5;
-    bossHp = 10;
+    bossHp = 100;
     health.style.width = 100 + "%";
     myHp = 100;
     myhealth.style.width = 100 + "%";
