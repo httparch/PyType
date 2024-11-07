@@ -90,7 +90,6 @@ function setGame() {
     hit = 0;
     combo = 0;
     score = 0;
-    console.log("setGame:" + updatecombo.innerHTML)
     gameend = false;
     updatecombo.style.color = "white";
     updatecombo.innerHTML = 0;
@@ -191,7 +190,6 @@ function typing(e) {
     }
 
     typed = e.key; // Capture the typed key
-    console.log("Key pressed:", typed); // Debug log
     
     if (gameend) {
         return;
@@ -208,7 +206,7 @@ function typing(e) {
                     spans[i].innerHTML = typed;
                 }
                 
-                console.log("Correct input detected");
+                
                 game.classList.add("green-border");
                 combo += 1;
                 correct += 1;
@@ -223,7 +221,7 @@ function typing(e) {
             if (spans[i].classList.contains("bg")) { 
                 continue;
             } else if (spans[i].classList.contains("bg") === false && spans[i-1] === undefined || spans[i-1].classList.contains("bg") !== false ) {
-                console.log("Incorrect input detected");
+                
                 game.classList.add("red-border");
                 combo = 0;
                 //bawas buhay pag typo
@@ -251,11 +249,11 @@ function typing(e) {
         if (checker === spans.length) {
             hit = 1;
             score += Math.floor(correct*(Math.floor(combo/10)*0.5 + 1));
-            console.log(score);
+            
             updatescore.innerHTML = score;
-            console.log("update:" + updatescore.innerHTML)
+      
             updatescores.innerHTML = score;
-            console.log("update:" + updatescores.innerHTML)
+        
 
             document.removeEventListener("keydown", typing, false);
             setTimeout(function(){
@@ -525,7 +523,7 @@ function showGameOver(isWin) {
         }
     } , "*")
 
-    console.log('here')
+    
 
     gameend = true;
     clearInterval(cd);
@@ -545,18 +543,17 @@ function getPoints(mode){
    const points = Math.floor(score/50)
     if(current_mode === 'medium'){
         const points = Math.floor((score + 100)/50)
-        console.log(points)
+    
         return points
     }else if(current_mode === 'hard') {
         const points = Math.floor((score + 500)/50)
-        console.log(points)
+        
         return points
     }
     return points;
 }
 
 function initializeAudio() {
-    console.log("Initializing audio...");
     
     // Initialize all audio elements with proper volume
     if (inflictEnemySound) {
@@ -593,16 +590,16 @@ function initializeAudio() {
             bgMusic.autoplay = true;
             
             await bgMusic.play();
-            console.log("Music started successfully");
+         
         } catch (error) {
-            console.log("Autoplay failed:", error);
+            
             
             // Fallback: try to play on first user interaction
             const playOnInteraction = async () => {
                 if (!isMuted) {
                     try {
                         await bgMusic.play();
-                        console.log("Music started after interaction");
+                       
                         // Remove listener after successful play
                         document.removeEventListener('click', playOnInteraction);
                     } catch (err) {
