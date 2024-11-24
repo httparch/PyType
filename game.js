@@ -1,4 +1,4 @@
-var spans = 0, bossHp, myHp, time, mode, timemode, totaltime, damage, hit, correct, combo, score, myTime, gameend;
+var spans = 0, bossHp, myHp, time, mode, timemode, totaltime, damage, hit, correct, combo, score, myTime, gameend, questionType, assigningCount, declaringCount;
 var words = document.querySelector(".words");
 var health = document.querySelector(".health");
 var myhealth = document.querySelector(".myhealth");
@@ -263,7 +263,8 @@ function typing(e) {
             updatescore.innerHTML = score;
       
             updatescores.innerHTML = score;
-        
+            assigningCount += (questionType === "Assigning") ? 1 : 0;
+            declaringCount += (questionType === "Declaration") ? 1 : 0;
 
             document.removeEventListener("keydown", typing, false);
             setTimeout(function(){
@@ -494,8 +495,8 @@ function showGameOver(isWin) {
     if (isWin) {
             gamewin.style.display = "flex";
             gameover.style.display = "none";
-           // console.log('assigning:'+assigningCount)
-           // console.log('declaring:'+declaringCount)
+            console.log('assigning:'+assigningCount)
+            console.log('declaring:'+declaringCount)
     } else {
         gamewin.style.display = "none";
         gameover.style.display = "flex";
