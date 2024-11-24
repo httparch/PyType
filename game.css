@@ -151,6 +151,7 @@ a * {
     user-select: none;
     padding: 10px; /* Added padding */
     transition: all 0.3s ease;
+    border-radius: 0; /* Remove border radius for sharp corners */
 }
 
 .rightturn:hover {
@@ -166,7 +167,7 @@ a * {
     cursor: pointer;
     user-select: none;
     padding: 10px 15px; /* Added padding */
-    border-radius: 5px; /* Added rounded corners */
+    border-radius: 0; /* Remove border radius for sharp corners */
     margin: 0 10px; /* Added some horizontal margin */
     transition: all 0.3s ease; /* Smooth transition for hover effects */
 }
@@ -234,7 +235,10 @@ a * {
     transition: opacity 500ms;
     visibility: hidden;
     opacity: 0;
-  }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 .overlay:target {
     visibility: visible;
@@ -242,19 +246,37 @@ a * {
 }
 
 .popup {
-    text-align: left;
-    font-size: 1.25vmax;
-    margin: 7% auto;
-    padding: 20px;
+    width: 80%;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 30px;
     background: #fff;
     border-radius: 5px;
-    width: 30%;
-    max-height: 80vh; /* Set a maximum height */
     position: relative;
-    overflow-y: auto; /* Enable vertical scrolling */
 }
 
-/* Add some padding to the bottom to ensure last paragraph is fully visible when scrolled */
+.popup h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.popup p {
+    text-align: left;
+    margin-left: 20px; /* Add left indentation */
+    line-height: 1.6; /* Improve readability with line spacing */
+    margin-bottom: 15px; /* Space between paragraphs */
+}
+
+.popup .close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 24px;
+    text-decoration: none;
+    color: #333;
+}
+
+/* Optional: Add some padding to the bottom to ensure last paragraph is fully visible when scrolled */
 .popup > *:last-child {
     padding-bottom: 20px;
 }
@@ -613,3 +635,69 @@ a * {
 .red-border {
     animation: redBorder 0.5s ease-out;
 }
+
+.music-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid #86d9ff;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.music-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(134, 217, 255, 0.5);
+}
+
+.music-btn:focus {
+    outline: none;
+}
+
+.music-icon {
+    font-size: 24px;
+    line-height: 1;
+    user-select: none;
+}
+
+/* Hide audio elements */
+audio {
+    display: none;
+}
+
+/* Optional: Add a visual feedback when music is muted */
+.music-btn.muted {
+    opacity: 0.7;
+    border-color: rgba(134, 217, 255, 0.5);
+}
+
+.music-btn.muted .music-icon {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.howtoplay-link {
+    background: none;
+    text-decoration: none;
+    color: white; /* or whatever color you want */
+}
+
+.howtoplay-link:hover {
+    text-decoration: underline; /* optional: adds underline on hover */
+}
+
+#mylevel a {
+    border-radius: 0; /* This ensures any other level-related links also have sharp corners */
+}
+

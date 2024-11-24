@@ -1,4 +1,4 @@
-var spans = 0, bossHp, myHp, time, mode, timemode, totaltime, damage, hit,tip, correct, combo, score, myTime, gameend, questionType, assigningCount, declaringCount;
+var spans = 0, bossHp, myHp, time, mode, timemode, totaltime, damage, hit, correct, combo, score, myTime, gameend;
 var words = document.querySelector(".words");
 var health = document.querySelector(".health");
 var myhealth = document.querySelector(".myhealth");
@@ -36,6 +36,13 @@ var bossDamaged = false; // Flag to track if boss was damaged
 var lastPlayerHp = 100;
 var lastBossHp = 100;
 
+// Add with your other variable declarations at the top
+var enemyDieSound = document.getElementById('enemyDieSound');
+var playerDieSound = document.getElementById('playerDieSound');
+var inflictEnemySound = document.getElementById('inflictEnemySound');
+var inflictPlayerSound = document.getElementById('inflictPlayerSound');
+var keyPressSound = document.getElementById('keyPressSound');
+
 // Add this function near the top of your game.js file
 function initializeGameState() {
     // Hide all screens except the main menu
@@ -47,7 +54,10 @@ function initializeGameState() {
 }
 
 // Call this function when the DOM is fully loaded
-document.addEventListener("DOMContentLoaded", initializeGameState);
+document.addEventListener("DOMContentLoaded", function() {
+    initializeGameState();
+    initializeAudio(); // Add this line
+});
 
 //Change mode
 function rightChange() {
@@ -76,7 +86,6 @@ function setGame() {
     hit = 0;
     combo = 0;
     score = 0;
-    console.log("setGame:" + updatecombo.innerHTML)
     gameend = false;
     updatecombo.style.color = "white";
     updatecombo.innerHTML = 0;
@@ -181,8 +190,16 @@ function typing(e) {
         return;  // If the key pressed is not a single character, ignore it
     }
 
+    // Play key press sound
+    if (!isMuted && keyPressSound) {
+        keyPressSound.currentTime = 0;
+        keyPressSound.volume = 0.3; // Lower volume for frequent sounds
+        keyPressSound.play().catch(function(error) {
+            console.log("Key press sound failed to play:", error);
+        });
+    }
+
     typed = e.key; // Capture the typed key
-    console.log("Key pressed:", typed); // Debug log
     
     if (gameend) {
         return;
@@ -199,7 +216,7 @@ function typing(e) {
                     spans[i].innerHTML = typed;
                 }
                 
-                console.log("Correct input detected");
+                
                 game.classList.add("green-border");
                 combo += 1;
                 correct += 1;
@@ -214,7 +231,7 @@ function typing(e) {
             if (spans[i].classList.contains("bg")) { 
                 continue;
             } else if (spans[i].classList.contains("bg") === false && spans[i-1] === undefined || spans[i-1].classList.contains("bg") !== false ) {
-                console.log("Incorrect input detected");
+                
                 game.classList.add("red-border");
                 combo = 0;
                 //bawas buhay pag typo
@@ -242,11 +259,11 @@ function typing(e) {
         if (checker === spans.length) {
             hit = 1;
             score += Math.floor(correct*(Math.floor(combo/10)*0.5 + 1));
-            console.log(score);
+            
             updatescore.innerHTML = score;
-            console.log("update:" + updatescore.innerHTML)
+      
             updatescores.innerHTML = score;
-            console.log("update:" + updatescores.innerHTML)
+        
 
             document.removeEventListener("keydown", typing, false);
             setTimeout(function(){
@@ -258,8 +275,6 @@ function typing(e) {
             }, 400);
             bossHp -= 10;
             health.style.width = bossHp + "%";
-            assigningCount += (questionType === "Assigning") ? 1 : 0;
-            declaringCount += (questionType === "Declaration") ? 1 : 0;
         }
     }
 
@@ -278,6 +293,16 @@ function check() {
     if (bossHp <= 0) {
         monster_start.style.display = "none";
         monster_die.style.display = "block";
+        
+        // Play enemy death sound if not muted
+        if (!isMuted && enemyDieSound) {
+            enemyDieSound.currentTime = 0;
+            enemyDieSound.volume = 0.5;
+            enemyDieSound.play().catch(function(error) {
+                console.log("Enemy die sound failed to play:", error);
+            });
+        }
+        
         setTimeout(() => {
             showGameOver(true);
         }, 2000);
@@ -305,6 +330,16 @@ function check() {
     if (myHp < lastPlayerHp) {
         player_start.classList.add('shake-animation');
         game.classList.add('red-flash');
+        
+        // Play player hurt sound if not muted
+        if (!isMuted && inflictPlayerSound) {
+            inflictPlayerSound.currentTime = 0;
+            inflictPlayerSound.volume = 0.5;
+            inflictPlayerSound.play().catch(function(error) {
+                console.log("Player hurt sound failed to play:", error);
+            });
+        }
+
         setTimeout(() => {
             player_start.classList.remove('shake-animation');
             game.classList.remove('red-flash');
@@ -464,6 +499,12 @@ function showGameOver(isWin) {
     } else {
         gamewin.style.display = "none";
         gameover.style.display = "flex";
+        // Play player death sound if not muted
+        if (!isMuted) {
+            playerDieSound.play().catch(function(error) {
+                console.log("Player die sound failed to play:", error);
+            });
+        }
     }
 
     // Update the final score
@@ -496,7 +537,7 @@ function showGameOver(isWin) {
         }
     } , "*")
 
-    console.log('here')
+    
 
     gameend = true;
     clearInterval(cd);
@@ -521,14 +562,96 @@ function getPoints(mode){
    const points = Math.floor(score/50)
     if(current_mode === 'medium'){
         const points = Math.floor((score + 100)/50)
-        console.log(points)
+    
         return points
     }else if(current_mode === 'hard') {
         const points = Math.floor((score + 500)/50)
-        console.log(points)
+        
         return points
     }
     return points;
+}
+
+function initializeAudio() {
+    
+    // Initialize all audio elements with proper volume
+    if (inflictEnemySound) {
+        inflictEnemySound.volume = 0.5;
+    }
+    if (inflictPlayerSound) {
+        inflictPlayerSound.volume = 0.5;
+    }
+    if (enemyDieSound) {
+        enemyDieSound.volume = 0.5;
+    }
+    if (keyPressSound) {
+        keyPressSound.volume = 0.3; // Lower volume since it plays frequently
+    }
+    
+    // Set initial volume lower
+    bgMusic.volume = 0.3;
+    
+    // Get stored mute preference, default to false if not stored
+    isMuted = false; // Changed this line to always start unmuted
+    localStorage.setItem('isMuted', 'false'); // Ensure localStorage is set to unmuted
+    
+    // Set initial state
+    bgMusic.muted = isMuted;
+    updateMusicButton();
+
+    // Function to try playing music
+    async function tryPlayMusic() {
+        if (isMuted) return; // Don't try to play if muted
+        
+        try {
+            // Set loop and autoplay attributes
+            bgMusic.loop = true;
+            bgMusic.autoplay = true;
+            
+            await bgMusic.play();
+         
+        } catch (error) {
+            
+            
+            // Fallback: try to play on first user interaction
+            const playOnInteraction = async () => {
+                if (!isMuted) {
+                    try {
+                        await bgMusic.play();
+                       
+                        // Remove listener after successful play
+                        document.removeEventListener('click', playOnInteraction);
+                    } catch (err) {
+                        console.error("Failed to play music:", err);
+                    }
+                }
+            };
+
+            document.addEventListener('click', playOnInteraction, { once: true });
+        }
+    }
+
+    // Try to play immediately
+    tryPlayMusic();
+    
+    // Music toggle button handler
+    musicToggle.addEventListener('click', function() {
+        isMuted = !isMuted;
+        bgMusic.muted = isMuted;
+        localStorage.setItem('isMuted', isMuted);
+        updateMusicButton();
+        
+        // If unmuting, try to play
+        if (!isMuted) {
+            tryPlayMusic();
+        }
+    });
+}
+
+// Add this function near your other audio-related functions
+function updateMusicButton() {
+    const icon = musicToggle.querySelector('.music-icon');
+    icon.textContent = isMuted ? '🔇' : '🔊';
 }
 
 

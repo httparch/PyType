@@ -5,9 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PyType</title>
     <link rel="stylesheet" href="game.css">
-    <body>
-        <div id= "mainmenu">
-    </head> <!-- -->
+</head>
+<body>
+    <!-- Audio and Music Button -->
+    <audio id="bgMusic" loop autoplay>
+        <source src="sound/bg1.wav" type="audio/wav">
+    </audio>
+    <audio id="enemyDieSound" preload="auto" src="sound/enemydie.flac"></audio>
+    <audio id="playerDieSound" preload="auto" src="sound/playerdie.wav"></audio>
+    <audio id="inflictEnemySound" preload="auto" src="sound/inflictenemy.wav"></audio>
+    <audio id="inflictPlayerSound" preload="auto" src="sound/inflictplayer.wav"></audio>
+    <audio id="keyPressSound" preload="auto" src="sound/key.wav"></audio>
+    <button id="musicToggle" class="music-btn">
+        <span class="music-icon">🔊</span>
+    </button>
+
+    <!-- Main Menu -->
+    <div id="mainmenu">
         <div id="menu">
             <img class="mainlogo" src="img/logo.png"> 
             <div id="level">
@@ -15,24 +29,24 @@
                     <a id="statusmode" mode="easy" onclick="setMode(mode)">Easy</a>
                     <a class="rightturn" onclick="rightChange()"> > </a>
                 </div>
-                <a href="#howtoplay">HOW TO PLAY ?</a>
+                <a href="#howtoplay" class="howtoplay-link">HOW TO PLAY ?</a>
             </div>
         </div>
         
         <div id="howtoplay" class="overlay">
-          <div class="popup">
-            <h1>How to Play</h1> 
-            <p>1. Defeat hi the monster by answering the question!</p> 
-            <p>2. Provide the complete answer to inflict damage on the monsters.</p> 
-            <p>3. Don't worry about typos—just keep typing and avoid using backspace!</p> 
-            <p>4. If you fail to complete the word in time, you'll take damage. If your health reaches zero, the game ends!</p> 
-            <p>5. Typing consecutive correct answers will earn you a combo! You'll receive a stacking 0.5 point multiplier for every 10 correct inputs, but you'll lose it if you make a mistake!</p>
-            <p>----- </p>
-            <a class="close" href="#Close">&times;</a>
-          </div>
+            <div class="popup">
+                <h1>How to Play</h1> 
+                <p>1. Defeat the monster by answering the question!</p> 
+                <p>2. Provide the complete answer to inflict damage on the monsters.</p> 
+                <p>3. Don't worry about typos—just keep typing and avoid using backspace!</p> 
+                <p>4. If you fail to complete the word in time, you'll take damage. If your health reaches zero, the game ends!</p> 
+                <p>5. Typing consecutive correct answers will earn you a combo! You'll receive a stacking 0.5 point multiplier for every 10 correct inputs, but you'll lose it if you make a mistake!</p>
+               
+                <a class="close" href="#Close">&times;</a>
+            </div>
         </div>
     </div>
-    
+
     <div id="game">
         <img src="img/logo.png" class="menuLogo">
         <div id="startdelay">3</div>
