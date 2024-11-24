@@ -1,4 +1,4 @@
-var spans = 0, bossHp, myHp, time, mode, timemode, totaltime, damage, hit, correct, combo, score, myTime, gameend;
+var spans = 0, bossHp, myHp, time, mode, timemode, totaltime, damage, hit,tip, correct, combo, score, myTime, gameend, questionType, assigningCount, declaringCount;
 var words = document.querySelector(".words");
 var health = document.querySelector(".health");
 var myhealth = document.querySelector(".myhealth");
@@ -21,9 +21,10 @@ var player_die = document.getElementById("player-die");
 var myword = document.getElementById("myword");
 var timestatus = document.getElementById("timestatus");
 var updatecombo = document.getElementById("updatecombo");
-var updatescores = document.getElementById("updatescores");
+var updatescores = document.getElementById("updatescores"); //here
 var updatescore = document.getElementById("updatescore");
 var scoreboard = document.getElementById("score");
+var updateTips = document.getElementById("updatetips"); 
 
 var updatepoints = document.getElementById('updatedpoints')
 
@@ -70,7 +71,7 @@ function setGame() {
     mymonster = Math.floor(Math.random()*1000)%5;
     bossHp = 100;
     health.style.width = 100 + "%";
-    myHp = 100;
+    myHp = 10;
     myhealth.style.width = 100 + "%";
     hit = 0;
     combo = 0;
@@ -81,7 +82,8 @@ function setGame() {
     updatecombo.innerHTML = 0;
     updatescore.innerHTML = 0;  
     updatescores.innerHTML = 0;  
-    
+    assigningCount = 0;
+    declaringCount = 0;
 
     monster_start.src = "./img/Mons" + mymonster + ".gif";
     monster_die.src = "./img/Mons" + mymonster + "-die.gif";
@@ -118,10 +120,14 @@ function setMode(mode) {
     totaltime = timemode;
     delayStart();
 }
+/*
+function getCategory(category){
+    if(category === "Assining"){
 
-//Random Word
-
-
+    }
+}*/
+    
+    //Random Word
 function random() {
     // Clear the previous question and answer
     words.innerHTML = "";
@@ -131,12 +137,21 @@ function random() {
     var randomIndex = Math.floor(Math.random() * wordlist.length);
 
     // Get the random question and answer from the wordlist
+
+    //add dito 
+    var questionCategory = wordlist[randomIndex].category;
+    var randomTips = wordlist[randomIndex].prompt;
     var randomQuestion = wordlist[randomIndex].question;
     var randomAnswer = wordlist[randomIndex].answer.split("");
+
+    questionType = questionCategory+"";
+    console.log('here ' + questionType)
+    //getCategory(questionCategory)
 
     window.answerCopy = randomAnswer.slice();
     // Display the question
     document.getElementById('question-text').innerHTML = randomQuestion;
+    document.getElementById('updatetips').innerHTML = randomTips
 
     // Display a partially hidden answer with blanks represented by underscores
     for (var i = 0; i < randomAnswer.length; i++) {
@@ -243,6 +258,8 @@ function typing(e) {
             }, 400);
             bossHp -= 10;
             health.style.width = bossHp + "%";
+            assigningCount += (questionType === "Assigning") ? 1 : 0;
+            declaringCount += (questionType === "Declaration") ? 1 : 0;
         }
     }
 
@@ -407,6 +424,8 @@ function menuGame() {
     myHp = 100;
     score = 0;
     combo = 0;
+    assigningCount = 0;
+    declaringCount = 0;
     gameend = false;
     
     // Reset UI elements
@@ -440,7 +459,8 @@ function showGameOver(isWin) {
     if (isWin) {
             gamewin.style.display = "flex";
             gameover.style.display = "none";
-        
+           // console.log('assigning:'+assigningCount)
+           // console.log('declaring:'+declaringCount)
     } else {
         gamewin.style.display = "none";
         gameover.style.display = "flex";
@@ -450,6 +470,17 @@ function showGameOver(isWin) {
     document.querySelectorAll('.scoreEnd span').forEach(span => {
         span.textContent = getScore(mode);
     });
+    /*
+    document.querySelectorAll('.scoreEnd strong').forEach(span => {
+        strong.textContent = getPrompt(tip);
+    });*/
+    //for prompt // change the span with different id for prompt property
+    /*
+    document.querySelectorAll('.scoreEnd span').forEach(span => {
+        span.textContent = getScore(mode);
+    });
+*/
+    
     document.querySelectorAll('.scorePoints span').forEach(span => {
         span.textContent = getPoints(mode);
     });
@@ -459,7 +490,9 @@ function showGameOver(isWin) {
         py_data:{
             points: getPoints(mode),
             game_mode: current_mode,
-            current_hp: getCurrentHp()
+            current_hp: getCurrentHp(),
+            assigning: assigningCount,
+            declaring: declaringCount
         }
     } , "*")
 
@@ -477,6 +510,11 @@ function getScore(mode) {
         return score + ' + 500pts'
     }
     return score;
+}
+
+function getPrompt(){
+
+    return 0;
 }
 
 function getPoints(mode){

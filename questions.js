@@ -1,8 +1,24 @@
+
+/**
+ *  category:
+ *  question:
+ *  answer:
+ *  prompt:
+ */
 const wordlist = [
     {
+        category: 'Assigning',
         question: 'Assign the value 10 to a variable named score.',
-        answer: 'score = 10'
+        answer: 'score = 10',
+        prompt: 'Int type of variables should have integer value ...' //tips nalang + message na aralin from IM
     },
+    {
+        category: 'Declaration',
+        question: 'What type of data is x in this line of code " x = 20.5 " .',
+        answer: 'float',
+        prompt: 'Float are used to store positive and negative numbers with a decimal point.' //tips nalang + message na aralin from IM
+    },
+    /*
     {
         question: 'Assign the string "John" to a variable named firstName.',
         answer: 'firstName = "John"'
@@ -4223,5 +4239,6 @@ const wordlist = [
         question: 'Assign the boolean value False to a variable named isInitialized.',
         answer: 'isInitialized = False'
     }
+        */
 ];
 
