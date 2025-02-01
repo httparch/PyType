@@ -1,5 +1,6 @@
 # PyType
-
+![PyType Game Screenshot](img/Screenshot 2025-02-01 123210.png)
+![PyType Game Screenshot](img/Screenshot 2025-02-01 123236.png)
 ## Overview
 PyType is an interactive typing game designed to improve programming fundamental specifically on data types in Python. It is part of the **CodeHub** system within the gamified virtual classroom project. The game challenges users to type Python code quickly and accurately while introducing new concepts to beginners.
 
